@@ -1,40 +1,31 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import { ThemeProvider } from "styled-components";
-
-import TextBox from "./TextBox";
-
-const Button = styled.button`
-  font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
-  border-radius: 3px;
-  background-color: ${(props) => props.theme.bg};
-  color: ${(props) => props.theme.color};
-`;
-
-Button.defaultProps = {
-  theme: {
-    bg: "black",
-    color: "white",
-  },
-};
-
-const night = {
-  bg: "white",
-  color: "black",
-};
+import { lightTheme, darkTheme } from "./theme";
+import { GlobalStyles } from "./global";
 
 function App() {
+  const [theme, setTheme] = useState(lightTheme);
+  const [title, setTitle] = useState("It's a light theme!");
+
+  const toggleTheme = () => {
+    // if the theme is not light, then set it to dark
+    if (theme === lightTheme) {
+      setTheme(darkTheme);
+      setTitle("It's a dark theme!");
+      // otherwise, it should be light
+    } else {
+      setTheme(lightTheme);
+      setTitle("It's a light theme!");
+    }
+  };
+
   return (
-    <div>
-      <Button>Default Theme</Button>
-      <ThemeProvider theme={night}>
-        <Button>Dark Theme</Button>
-        <TextBox></TextBox>
-      </ThemeProvider>
-      <TextBox></TextBox>
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <button onClick={toggleTheme}>Toggle theme</button>
+      <h1>{title}</h1>
+      <footer></footer>
+    </ThemeProvider>
   );
 }
 
